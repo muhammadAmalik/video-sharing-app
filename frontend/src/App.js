@@ -3,9 +3,9 @@ import React from 'react';
 import { Routes, Route } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import HomePage from './pages/HomePage';
+import VideoDetailPage from './pages/VideoDetailPage';
 import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
-import VideoDetailPage from './pages/VideoDetailPage';
 
 function App() {
   return (

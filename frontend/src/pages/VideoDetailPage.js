@@ -1,35 +1,36 @@
 // src/pages/VideoDetailPage.js
 import React, { useEffect, useState } from 'react';
-import { Container, Typography, Box, TextField, Button } from '@mui/material';
+import { Container, Typography, Box } from '@mui/material';
 import { useParams } from 'react-router-dom';
+import CommentSection from '../components/CommentSection';
 import api from '../services/api';
 
 function VideoDetailPage() {
   const { id } = useParams();
   const [video, setVideo] = useState(null);
-  const [commentText, setCommentText] = useState('');
 
   useEffect(() => {
-    // Example: api.get(`/videos/${id}`).then(res => setVideo(res.data))
-    // For demonstration:
+    // In real scenario: api.get(`/videos/${id}`)
     setVideo({
       _id: id,
       title: 'Sample Video Title',
       videoUrl: 'https://samplelib.com/lib/preview/mp4/sample-5s.mp4',
       hashtags: ['#sample', '#video'],
-      comments: [{ text: 'Nice video!' }, { text: 'Cool!' }],
+      comments: [
+        { user: 'Alice', text: 'Great video!' },
+        { user: 'Bob', text: 'Awesome content!' },
+      ],
     });
   }, [id]);
 
-  const handleComment = () => {
-    // Post comment: api.post(`/comments/${id}`, { text: commentText })
-    // Then set state:
-    if (!commentText) return;
+  const handleAddComment = (text) => {
+    // Example: api.post(`/comments/${id}`, { text })
+    // Then update state
+    if (!text) return;
     setVideo((prev) => ({
       ...prev,
-      comments: [...prev.comments, { text: commentText }],
+      comments: [...prev.comments, { user: 'You', text }],
     }));
-    setCommentText('');
   };
 
   if (!video) return <p>Loading...</p>;
@@ -45,31 +46,7 @@ function VideoDetailPage() {
       <Typography variant="body1" gutterBottom>
         Hashtags: {video.hashtags.join(' ')}
       </Typography>
-
-      <Typography variant="h6" sx={{ mt: 2 }}>
-        Comments
-      </Typography>
-      {video.comments.map((c, idx) => (
-        <Typography key={idx} sx={{ ml: 2, mt: 1 }}>
-          • {c.text}
-        </Typography>
-      ))}
-      <Box sx={{ mt: 2 }}>
-        <TextField
-          label="Add a comment"
-          variant="outlined"
-          fullWidth
-          value={commentText}
-          onChange={(e) => setCommentText(e.target.value)}
-        />
-        <Button
-          variant="contained"
-          sx={{ mt: 2 }}
-          onClick={handleComment}
-        >
-          Submit
-        </Button>
-      </Box>
+      <CommentSection comments={video.comments} onAddComment={handleAddComment} />
     </Container>
   );
 }

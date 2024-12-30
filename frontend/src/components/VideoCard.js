@@ -16,9 +16,6 @@ function VideoCard({ video }) {
           height="180"
           image={thumbnail}
           alt={video.title}
-          sx={{
-            objectFit: 'cover',
-          }}
         />
         <CardContent>
           <Typography variant="h6" noWrap>

@@ -3,24 +3,29 @@ import React, { useState } from 'react';
 import { Container, Paper, Box, TextField, Typography, Button } from '@mui/material';
 import LockIcon from '@mui/icons-material/Lock';
 import { Link } from 'react-router-dom';
-import api from '../services/api';
 
 function LoginPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
   const handleLogin = () => {
-    // Example: api.post('/auth/login', { email, password })
-    //   .then(res => { localStorage.setItem('token', res.data.token); window.location.href = '/'; })
-    //   .catch(err => alert('Login failed'));
+    // Example: call backend: api.post('/auth/login', { email, password })
     alert(`Logging in with ${email} / ${password}`);
   };
 
   return (
-    <Container maxWidth="sm" sx={{ mt: 6 }}>
-      <Paper sx={{ p: 4, textAlign: 'center' }} elevation={6}>
-        <LockIcon sx={{ fontSize: 48, mb: 2, color: 'primary.main' }} />
-        <Typography variant="h5" gutterBottom>
+    <Container maxWidth="sm" sx={{ mt: 8 }}>
+      <Paper
+        sx={{
+          p: 4,
+          textAlign: 'center',
+          borderRadius: '20px',
+          boxShadow: '0 8px 30px rgba(0,0,0,0.1)',
+        }}
+        elevation={3}
+      >
+        <LockIcon sx={{ fontSize: 60, mb: 2, color: 'primary.main' }} />
+        <Typography variant="h4" gutterBottom>
           Login
         </Typography>
         <Box component="form" sx={{ mt: 2 }}>
@@ -45,7 +50,7 @@ function LoginPage() {
             variant="contained"
             color="primary"
             fullWidth
-            sx={{ mt: 3 }}
+            sx={{ mt: 3, py: 1.5, fontSize: '1rem' }}
             onClick={handleLogin}
           >
             Sign In
@@ -53,7 +58,7 @@ function LoginPage() {
         </Box>
         <Typography variant="body2" sx={{ mt: 2 }}>
           Don’t have an account?{' '}
-          <Link to="/register" style={{ color: '#7b1fa2' }}>
+          <Link to="/register" style={{ color: '#6a1b9a', fontWeight: 'bold' }}>
             Register
           </Link>
         </Typography>

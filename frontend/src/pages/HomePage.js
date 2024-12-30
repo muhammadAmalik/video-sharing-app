@@ -1,20 +1,23 @@
 // src/pages/HomePage.js
 import React, { useEffect, useState } from 'react';
-import { Container, Typography, Grid } from '@mui/material';
+import { Container, Typography, Grid, Box } from '@mui/material';
 import VideoCard from '../components/VideoCard';
+import HashtagList from '../components/HashtagList';
 import api from '../services/api';
 
 function HomePage() {
   const [videos, setVideos] = useState([]);
+  const [hashtags, setHashtags] = useState([]);
 
   useEffect(() => {
-    // In real scenario, you'd fetch from your backend: api.get('/videos/latest')
-    // Mock data for demonstration:
+    // For demonstration, local mock data:
     setVideos([
-      { _id: '1', title: 'Cool Video #1', thumbnailUrl: '', hashtags: ['#cool', '#fun'] },
-      { _id: '2', title: 'Travel Vlog', thumbnailUrl: '', hashtags: ['#travel', '#vlog'] },
-      // ...
+      { _id: '1', title: 'Awesome Travel', thumbnailUrl: '', hashtags: ['#travel', '#adventure'] },
+      { _id: '2', title: 'Cooking Tips', thumbnailUrl: '', hashtags: ['#food', '#cooking'] },
+      { _id: '3', title: 'Tech Review', thumbnailUrl: '', hashtags: ['#tech', '#gadgets'] },
     ]);
+
+    setHashtags(['#travel', '#food', '#tech', '#funny', '#music', '#sports']);
   }, []);
 
   return (
@@ -22,13 +25,21 @@ function HomePage() {
       <Typography variant="h4" gutterBottom>
         Latest Videos
       </Typography>
-      <Grid container spacing={3}>
-        {videos.map((video) => (
-          <Grid item xs={12} sm={6} md={4} key={video._id}>
-            <VideoCard video={video} />
+      <Box sx={{ display: 'flex', gap: 4 }}>
+        <Box sx={{ flex: 3 }}>
+          <Grid container spacing={3}>
+            {videos.map((video) => (
+              <Grid item xs={12} sm={6} md={4} key={video._id}>
+                <VideoCard video={video} />
+              </Grid>
+            ))}
           </Grid>
-        ))}
-      </Grid>
+        </Box>
+
+        <Box sx={{ flex: 1 }}>
+          <HashtagList hashtags={hashtags} />
+        </Box>
+      </Box>
     </Container>
   );
 }
