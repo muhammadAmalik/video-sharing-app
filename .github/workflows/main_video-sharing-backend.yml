@@ -1,4 +1,4 @@
-name: Build and deploy Node.js backend to Azure Web App
+name: Build and Deploy Node.js Backend to Azure Web App
 
 on:
   push:
@@ -12,7 +12,7 @@ jobs:
       - name: Check out code
         uses: actions/checkout@v4
 
-      - name: Set up Node 18
+      - name: Set up Node.js 18.x
         uses: actions/setup-node@v3
         with:
           node-version: '18.x'
@@ -28,7 +28,7 @@ jobs:
       - name: Zip the backend folder
         run: |
           cd backend
-          zip -r ../backend.zip .   # Zip everything in 'backend/' to a zip file in parent
+          zip -r ../backend.zip .   # Zips the 'backend' folder contents
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
@@ -51,9 +51,8 @@ jobs:
       - name: 'Deploy to Azure Web App'
         uses: azure/webapps-deploy@v3
         with:
-          app-name: 'video-sharing-backend'  # your App Service name
-          package: 'deploy'                  # Updated path
+          app-name: 'video-sharing-backend'  # Ensure this is correct
+          package: 'deploy/backend'          # Ensure this path exists
           publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
           # If you have a slot, add:
-          # slot-name: 'ewgnfnepbcamg3bq'
-
+          # slot-name: 'your-slot-name'
