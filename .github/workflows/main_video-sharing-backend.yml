@@ -54,6 +54,6 @@ jobs:
         uses: azure/webapps-deploy@v3
         with:
           app-name: 'video-sharing-backend'
-          slot-name: 'Production'   # or 'ewgnfnepbcamg3bq' or leave it out
+          slot-name: 'ewgnfnepbcamg3bq'   # or 'ewgnfnepbcamg3bq' or leave it out
           package: .
           publish-profile: ${{ secrets.AzureAppService_PublishProfile_8b34f11cf6574dc087e65634b7412c5a }}
