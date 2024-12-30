@@ -59,4 +59,4 @@ jobs:
           app-name: 'video-sharing-backend'
           slot-name: 'Production'
           package: .
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_EC0B46492B5243E3AF6F05D4F8DDA363 }}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_07756511F08C41ACBB68F6C1EE863806 }}
