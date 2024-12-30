@@ -1,17 +1,27 @@
 import { createTheme } from '@mui/material/styles';
 
-// Example color palette: Purple + Pink
 const theme = createTheme({
   palette: {
     primary: {
-      main: '#9c27b0', // Purple
+      main: '#673ab7', // Deep Purple
     },
     secondary: {
-      main: '#e91e63', // Pink
+      main: '#ff5722', // Deep Orange
     },
   },
   typography: {
-    fontFamily: ['"Poppins"', 'Roboto', 'Arial', 'sans-serif'].join(','),
+    fontFamily: ['Poppins', 'Roboto', 'Arial', 'sans-serif'].join(','),
+  },
+  components: {
+    // Example of customizing MUI components
+    MuiCard: {
+      styleOverrides: {
+        root: {
+          borderRadius: '1rem',
+          boxShadow: '0 4px 20px rgba(0,0,0,0.1)',
+        },
+      },
+    },
   },
 });
 
