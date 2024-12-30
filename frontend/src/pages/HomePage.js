@@ -1,21 +1,18 @@
+// src/pages/HomePage.js
 import React, { useEffect, useState } from 'react';
 import { Container, Typography, Grid } from '@mui/material';
 import VideoCard from '../components/VideoCard';
+import api from '../services/api';
 
 function HomePage() {
   const [videos, setVideos] = useState([]);
 
   useEffect(() => {
-    // fetch videos from your backend
-    // e.g. fetch('/api/videos/latest')
-    //   .then(res => res.json())
-    //   .then(data => setVideos(data))
-    //   .catch(err => console.error(err));
-
-    // Dummy data for demonstration
+    // In real scenario, you'd fetch from your backend: api.get('/videos/latest')
+    // Mock data for demonstration:
     setVideos([
-      { _id: '1', title: 'Fun Video #1', thumbnailUrl: '', hashtags: ['#fun', '#video'] },
-      { _id: '2', title: 'Cool Shorts', thumbnailUrl: '', hashtags: ['#cool', '#shorts'] },
+      { _id: '1', title: 'Cool Video #1', thumbnailUrl: '', hashtags: ['#cool', '#fun'] },
+      { _id: '2', title: 'Travel Vlog', thumbnailUrl: '', hashtags: ['#travel', '#vlog'] },
       // ...
     ]);
   }, []);

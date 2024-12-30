@@ -1,24 +1,27 @@
+// src/components/Navbar.js
 import React from 'react';
-import AppBar from '@mui/material/AppBar';
-import Toolbar from '@mui/material/Toolbar';
-import IconButton from '@mui/material/IconButton';
-import Typography from '@mui/material/Typography';
-import VideoLibraryIcon from '@mui/icons-material/VideoLibrary';
+import { AppBar, Toolbar, Typography, IconButton, Button } from '@mui/material';
 import { Link } from 'react-router-dom';
+import PlayCircleFilledWhiteIcon from '@mui/icons-material/PlayCircleFilledWhite';
 
 function Navbar() {
   return (
-    <AppBar position="static" color="primary">
+    <AppBar position="static">
       <Toolbar>
         <IconButton sx={{ color: '#fff', mr: 2 }}>
-          <VideoLibraryIcon />
+          <PlayCircleFilledWhiteIcon fontSize="large" />
         </IconButton>
-        <Typography variant="h6" sx={{ flexGrow: 1 }}>
-          <Link to="/" style={{ color: '#fff', textDecoration: 'none' }}>
+        <Typography variant="h5" sx={{ flexGrow: 1 }}>
+          <Link to="/" style={{ textDecoration: 'none', color: '#fff' }}>
             MiniTik
           </Link>
         </Typography>
-        {/* Additional nav items like Login/Register can go here */}
+        <Button color="inherit" component={Link} to="/login" sx={{ mr: 2 }}>
+          Login
+        </Button>
+        <Button variant="outlined" color="inherit" component={Link} to="/register">
+          Register
+        </Button>
       </Toolbar>
     </AppBar>
   );
