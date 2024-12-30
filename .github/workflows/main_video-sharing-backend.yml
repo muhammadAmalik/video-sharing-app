@@ -25,10 +25,10 @@ jobs:
           # npm run build --if-present
           # npm test --if-present
 
-      - name: Zip the backend folder
+      - name: Zip the backend folder contents
         run: |
           cd backend
-          zip -r ../backend.zip .   # Zips the 'backend' folder contents
+          zip -r ../backend.zip .   # Zips the contents of 'backend'
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
@@ -51,8 +51,8 @@ jobs:
       - name: 'Deploy to Azure Web App'
         uses: azure/webapps-deploy@v3
         with:
-          app-name: 'video-sharing-backend'  # Ensure this is correct
-          package: 'deploy/backend'          # Ensure this path exists
+          app-name: 'video-sharing-backend'  # Your Azure App Service name
+          package: 'deploy'                   # Updated path to 'deploy'
           publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
           # If you have a slot, add:
           # slot-name: 'your-slot-name'
