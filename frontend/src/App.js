@@ -9,11 +9,13 @@ import VideoDetailPage from './pages/VideoDetailPage';
 import UploadVideoPage from './pages/UploadVideoPage';
 import ProfilePage from './pages/ProfilePage';
 
+import { SnackbarProvider } from './components/SnackbarContext';
+
 function App() {
   const isAuthenticated = !!localStorage.getItem('token');
 
   return (
-    <>
+    <SnackbarProvider>
       {isAuthenticated && <Navbar />}
       <Routes>
         <Route
@@ -47,10 +49,9 @@ function App() {
             </ProtectedRoute>
           }
         />
-        {/* catch all */}
         <Route path="*" element={<Navigate to="/" />} />
       </Routes>
-    </>
+    </SnackbarProvider>
   );
 }
 

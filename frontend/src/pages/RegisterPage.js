@@ -1,19 +1,12 @@
 import React, { useState } from 'react';
 import {
-  Container,
-  Paper,
-  Box,
-  TextField,
-  Typography,
-  Button,
-  FormControl,
-  InputLabel,
-  Select,
-  MenuItem
+  Container, Paper, Box, TextField, Typography,
+  Button, FormControl, InputLabel, Select, MenuItem
 } from '@mui/material';
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import { Link, useNavigate } from 'react-router-dom';
 import api from '../services/api';
+import { useSnackbar } from '../components/SnackbarContext';
 
 function RegisterPage() {
   const [username, setUsername] = useState('');
@@ -21,19 +14,20 @@ function RegisterPage() {
   const [password, setPassword] = useState('');
   const [role, setRole] = useState('consumer');
   const navigate = useNavigate();
+  const { showSuccess, showError } = useSnackbar();
 
   const handleRegister = async () => {
     try {
       await api.post('/auth/register', { username, email, password, role });
-      alert('Registration successful. Please log in.');
+      showSuccess('Registration successful. Please log in.');
       navigate('/login');
     } catch (err) {
-      alert('Registration failed');
+      showError('Registration failed');
     }
   };
 
   return (
-    <Container maxWidth="sm" sx={{ mt: 8 }} className="fade-in">
+    <Container maxWidth="sm" sx={{ mt: 8 }}>
       <Paper
         sx={{
           p: 4,
@@ -72,7 +66,6 @@ function RegisterPage() {
             onChange={(e) => setPassword(e.target.value)}
           />
 
-          {/* Role Dropdown */}
           <FormControl fullWidth sx={{ mt: 2 }}>
             <InputLabel>Role</InputLabel>
             <Select

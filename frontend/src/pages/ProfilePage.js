@@ -1,15 +1,19 @@
 import React, { useEffect, useState } from 'react';
 import { Container, Paper, Typography, Box } from '@mui/material';
 import api from '../services/api';
+import { useSnackbar } from '../components/SnackbarContext';
 
 function ProfilePage() {
   const [user, setUser] = useState(null);
+  const { showError } = useSnackbar();
 
   useEffect(() => {
     api.get('/users/profile')
       .then(res => setUser(res.data))
-      .catch(err => console.error(err));
-  }, []);
+      .catch(err => {
+        showError('Failed to load profile');
+      });
+  }, [showError]);
 
   if (!user) return <p>Loading profile...</p>;
 

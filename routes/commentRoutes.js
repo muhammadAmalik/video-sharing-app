@@ -10,7 +10,7 @@ router.post('/:videoId', authMiddleware, async (req, res) => {
     const { videoId } = req.params;
     const { text } = req.body;
     if (!text) return res.status(400).json({ message: 'No comment text' });
-    
+
     const video = await Video.findById(videoId);
     if (!video) return res.status(404).json({ message: 'Video not found' });
 
@@ -21,8 +21,9 @@ router.post('/:videoId', authMiddleware, async (req, res) => {
     });
     await comment.save();
 
-    res.status(201).json(comment);
+    return res.status(201).json(comment);
   } catch (err) {
+    console.error(err);
     res.status(500).json({ message: err.message });
   }
 });

@@ -10,20 +10,17 @@ router.post('/register', async (req, res) => {
     if (!email || !password || !username || !role) {
       return res.status(400).json({ message: 'Missing fields' });
     }
-
-    // Validate role
     if (!['consumer', 'creator'].includes(role)) {
       return res.status(400).json({ message: 'Invalid role' });
     }
-
     let user = await User.findOne({ email });
     if (user) return res.status(400).json({ message: 'Email already in use' });
 
     user = new User({ email, password, username, role });
     await user.save();
-    res.status(201).json({ message: 'User registered' });
+    return res.status(201).json({ message: 'User registered' });
   } catch (err) {
-    res.status(500).json({ message: err.message });
+    return res.status(500).json({ message: err.message });
   }
 });
 
@@ -37,10 +34,10 @@ router.post('/login', async (req, res) => {
     const isMatch = await user.matchPassword(password);
     if (!isMatch) return res.status(400).json({ message: 'Invalid credentials' });
 
-    // JWT
-    const token = jwt.sign({ id: user._id, role: user.role }, process.env.JWT_SECRET, { expiresIn: '1d' });
-
-    res.json({
+    const token = jwt.sign({ id: user._id, role: user.role }, process.env.JWT_SECRET, {
+      expiresIn: '1d',
+    });
+    return res.json({
       token,
       user: {
         _id: user._id,
@@ -50,7 +47,7 @@ router.post('/login', async (req, res) => {
       },
     });
   } catch (err) {
-    res.status(500).json({ message: err.message });
+    return res.status(500).json({ message: err.message });
   }
 });
 

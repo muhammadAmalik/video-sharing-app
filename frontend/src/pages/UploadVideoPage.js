@@ -1,17 +1,12 @@
 import React, { useState } from 'react';
 import {
-  Container,
-  Card,
-  CardContent,
-  Typography,
-  TextField,
-  Button,
-  LinearProgress,
-  Box
+  Container, Card, CardContent, Typography,
+  TextField, Button, LinearProgress, Box
 } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import api from '../services/api';
+import { useSnackbar } from '../components/SnackbarContext';
 
 const HiddenInput = styled('input')({
   display: 'none',
@@ -23,6 +18,7 @@ function UploadVideoPage() {
   const [videoFile, setVideoFile] = useState(null);
   const [uploadProgress, setUploadProgress] = useState(0);
   const [uploading, setUploading] = useState(false);
+  const { showSuccess, showError } = useSnackbar();
 
   const handleFileSelect = (e) => {
     setVideoFile(e.target.files[0]);
@@ -30,7 +26,7 @@ function UploadVideoPage() {
 
   const handleUpload = async () => {
     if (!videoFile) {
-      alert('No video selected');
+      showError('No video selected!');
       return;
     }
     setUploading(true);
@@ -52,16 +48,16 @@ function UploadVideoPage() {
         },
       });
 
-      alert('Upload successful!');
+      showSuccess('Upload successful!');
       setTitle('');
       setHashtags('');
       setVideoFile(null);
       setUploadProgress(0);
     } catch (err) {
       if (err.response && err.response.status === 403) {
-        alert('Only creators can upload videos');
+        showError('Only creators can upload videos');
       } else {
-        alert('Upload failed');
+        showError('Upload failed');
       }
     } finally {
       setUploading(false);
@@ -69,7 +65,7 @@ function UploadVideoPage() {
   };
 
   return (
-    <Container maxWidth="md" sx={{ mt: 4 }} className="fade-in">
+    <Container maxWidth="md" sx={{ mt: 4 }}>
       <Card
         sx={{
           p: 3,
@@ -109,14 +105,12 @@ function UploadVideoPage() {
                 borderRadius: '12px',
                 textAlign: 'center',
                 transition: 'all 0.2s ease-in-out',
-                '&:hover': {
-                  backgroundColor: '#fce4ec',
-                },
+                '&:hover': { backgroundColor: '#fce4ec' },
               }}
             >
               <CloudUploadIcon sx={{ fontSize: 60, color: '#aaa' }} />
               <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
-                Drag and drop a video file here or click the button below.
+                Drag and drop a video file or click the button below.
               </Typography>
               <label htmlFor="video-upload">
                 <HiddenInput

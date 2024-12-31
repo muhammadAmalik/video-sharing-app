@@ -3,24 +3,28 @@ import { Container, Paper, Box, TextField, Typography, Button } from '@mui/mater
 import LockIcon from '@mui/icons-material/Lock';
 import { Link, useNavigate } from 'react-router-dom';
 import api from '../services/api';
+import { useSnackbar } from '../components/SnackbarContext';
 
 function LoginPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
+  const { showSuccess, showError } = useSnackbar(); // from context
 
   const handleLogin = async () => {
     try {
       const res = await api.post('/auth/login', { email, password });
       localStorage.setItem('token', res.data.token);
+
+      showSuccess('Login successful!');
       navigate('/');
     } catch (err) {
-      alert('Login failed');
+      showError('Login failed');
     }
   };
 
   return (
-    <Container maxWidth="sm" sx={{ mt: 8 }} className="fade-in">
+    <Container maxWidth="sm" sx={{ mt: 8 }}>
       <Paper
         sx={{
           p: 4,
