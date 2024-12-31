@@ -55,7 +55,7 @@ router.post('/upload', authMiddleware, upload.single('video'), async (req, res) 
 // GET /api/videos/latest
 router.get('/latest', async (req, res) => {
   try {
-    const vids = await Video.find().sort({ createdAt: -1 }).limit(20);
+    const vids = await Video.find().limit(20);
     res.json(vids);
   } catch (err) {
     console.error('Latest videos error:', err);
