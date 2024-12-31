@@ -1,34 +1,42 @@
 // src/pages/LoginPage.js
 import React, { useState } from 'react';
-import { Container, Paper, Box, TextField, Typography, Button } from '@mui/material';
+import {
+  Container,
+  Paper,
+  Box,
+  TextField,
+  Typography,
+  Button,
+} from '@mui/material';
 import LockIcon from '@mui/icons-material/Lock';
 import { Link } from 'react-router-dom';
+import api from '../services/api';
 
 function LoginPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
   const handleLogin = () => {
-    // Example: call backend: api.post('/auth/login', { email, password })
-    alert(`Logging in with ${email} / ${password}`);
+    // e.g. api.post('/auth/login', { email, password })
+    alert(`Logging in with ${email}`);
   };
 
   return (
-    <Container maxWidth="sm" sx={{ mt: 8 }}>
+    <Container maxWidth="sm" sx={{ mt: 8 }} className="fade-in">
       <Paper
         sx={{
           p: 4,
           textAlign: 'center',
           borderRadius: '20px',
-          boxShadow: '0 8px 30px rgba(0,0,0,0.1)',
+          backgroundColor: 'rgba(255,255,255,0.8)',
+          boxShadow: '0 8px 30px rgba(0,0,0,0.2)',
         }}
-        elevation={3}
       >
         <LockIcon sx={{ fontSize: 60, mb: 2, color: 'primary.main' }} />
         <Typography variant="h4" gutterBottom>
           Login
         </Typography>
-        <Box component="form" sx={{ mt: 2 }}>
+        <Box sx={{ mt: 2 }}>
           <TextField
             label="Email"
             variant="outlined"
