@@ -1,23 +1,23 @@
 import React, { useState } from 'react';
 import { Container, Paper, Box, TextField, Typography, Button } from '@mui/material';
+import { Link, useNavigate } from 'react-router-dom';
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
-import { Link } from 'react-router-dom';
 import api from '../services/api';
 
 function RegisterPage() {
+  const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const navigate = useNavigate();
 
-  const handleRegister = () => {
-    api.post('/auth/register', { email, password })
-      .then(() => {
-        alert('Registration successful');
-        window.location.href = '/login';
-      })
-      .catch((err) => {
-        console.error(err);
-        alert('Registration failed');
-      });
+  const handleRegister = async () => {
+    try {
+      await api.post('/auth/register', { username, email, password });
+      alert('Registration successful. Please log in.');
+      navigate('/login');
+    } catch (err) {
+      alert('Registration failed');
+    }
   };
 
   return (
@@ -27,18 +27,25 @@ function RegisterPage() {
           p: 4,
           textAlign: 'center',
           borderRadius: '20px',
-          backgroundColor: 'rgba(255,255,255,0.8)',
+          backgroundColor: 'rgba(255,255,255,0.85)',
           boxShadow: '0 8px 30px rgba(0,0,0,0.2)',
         }}
       >
-        <PersonAddIcon sx={{ fontSize: 60, mb: 2, color: 'secondary.main' }} />
+        <PersonAddIcon sx={{ fontSize: 60, color: 'secondary.main', mb: 2 }} />
         <Typography variant="h4" gutterBottom>
           Register
         </Typography>
         <Box sx={{ mt: 2 }}>
           <TextField
+            label="Username"
+            fullWidth
+            margin="normal"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+          />
+          <TextField
             label="Email"
-            variant="outlined"
+            type="email"
             fullWidth
             margin="normal"
             value={email}
@@ -46,7 +53,6 @@ function RegisterPage() {
           />
           <TextField
             label="Password"
-            variant="outlined"
             type="password"
             fullWidth
             margin="normal"
@@ -65,7 +71,7 @@ function RegisterPage() {
         </Box>
         <Typography variant="body2" sx={{ mt: 2 }}>
           Already have an account?{' '}
-          <Link to="/login" style={{ color: '#ef5350', fontWeight: 'bold' }}>
+          <Link to="/login" style={{ color: '#ff4081', fontWeight: 'bold' }}>
             Login
           </Link>
         </Typography>

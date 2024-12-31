@@ -1,23 +1,22 @@
 import React, { useState } from 'react';
 import { Container, Paper, Box, TextField, Typography, Button } from '@mui/material';
+import { Link, useNavigate } from 'react-router-dom';
 import LockIcon from '@mui/icons-material/Lock';
-import { Link } from 'react-router-dom';
 import api from '../services/api';
 
 function LoginPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const navigate = useNavigate();
 
-  const handleLogin = () => {
-    api.post('/auth/login', { email, password })
-      .then((res) => {
-        localStorage.setItem('token', res.data.token);
-        window.location.href = '/';
-      })
-      .catch((err) => {
-        console.error(err);
-        alert('Login failed');
-      });
+  const handleLogin = async () => {
+    try {
+      const res = await api.post('/auth/login', { email, password });
+      localStorage.setItem('token', res.data.token);
+      navigate('/');
+    } catch (err) {
+      alert('Login failed');
+    }
   };
 
   return (
@@ -27,18 +26,18 @@ function LoginPage() {
           p: 4,
           textAlign: 'center',
           borderRadius: '20px',
-          backgroundColor: 'rgba(255,255,255,0.8)',
+          backgroundColor: 'rgba(255,255,255,0.85)',
           boxShadow: '0 8px 30px rgba(0,0,0,0.2)',
         }}
       >
-        <LockIcon sx={{ fontSize: 60, mb: 2, color: 'primary.main' }} />
+        <LockIcon sx={{ fontSize: 60, color: 'primary.main', mb: 2 }} />
         <Typography variant="h4" gutterBottom>
           Login
         </Typography>
         <Box sx={{ mt: 2 }}>
           <TextField
             label="Email"
-            variant="outlined"
+            type="email"
             fullWidth
             margin="normal"
             value={email}
@@ -46,7 +45,6 @@ function LoginPage() {
           />
           <TextField
             label="Password"
-            variant="outlined"
             type="password"
             fullWidth
             margin="normal"
@@ -65,7 +63,7 @@ function LoginPage() {
         </Box>
         <Typography variant="body2" sx={{ mt: 2 }}>
           Don’t have an account?{' '}
-          <Link to="/register" style={{ color: '#6a1b9a', fontWeight: 'bold' }}>
+          <Link to="/register" style={{ color: '#8e24aa', fontWeight: 'bold' }}>
             Register
           </Link>
         </Typography>

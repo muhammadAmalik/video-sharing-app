@@ -1,73 +1,83 @@
 import React, { useState } from 'react';
 import {
-  AppBar,
-  Toolbar,
-  Typography,
-  IconButton,
-  Button,
-  Drawer,
-  List,
-  ListItem,
-  ListItemText,
-  Box,
+  AppBar, Toolbar, Typography, TextField, IconButton,
+  Avatar, Menu, MenuItem, Box, Button
 } from '@mui/material';
-import MenuIcon from '@mui/icons-material/Menu';
-import CloudUploadIcon from '@mui/icons-material/CloudUpload';
-import { Link } from 'react-router-dom';
+import SearchIcon from '@mui/icons-material/Search';
+import { Link, useNavigate } from 'react-router-dom';
 
 function Navbar() {
-  const [drawerOpen, setDrawerOpen] = useState(false);
+  const [anchorEl, setAnchorEl] = useState(null);
+  const [searchQuery, setSearchQuery] = useState('');
+  const navigate = useNavigate();
 
-  const toggleDrawer = () => setDrawerOpen(!drawerOpen);
+  const handleAvatarClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleMenuClose = () => {
+    setAnchorEl(null);
+  };
+
+  const handleProfile = () => {
+    setAnchorEl(null);
+    navigate('/profile');
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem('token');
+    navigate('/login');
+  };
+
+  const handleSearch = () => {
+    alert(`Searching for: ${searchQuery}`);
+  };
 
   return (
-    <>
-      <AppBar position="static" color="primary">
-        <Toolbar>
-          <IconButton sx={{ color: '#fff', mr: 2 }} onClick={toggleDrawer}>
-            <MenuIcon />
+    <AppBar position="static" sx={{ px: 2 }}>
+      <Toolbar>
+        {/* Logo / Title */}
+        <Typography variant="h5" sx={{ fontWeight: 'bold', flexGrow: 0, mr: 2 }}>
+          <Link to="/" style={{ color: '#fff', textDecoration: 'none' }}>
+            MegaVideo
+          </Link>
+        </Typography>
+
+        {/* Search Bar */}
+        <Box sx={{ display: 'flex', alignItems: 'center', flexGrow: 1 }}>
+          <TextField
+            variant="outlined"
+            size="small"
+            placeholder="Search..."
+            sx={{ backgroundColor: '#fff', borderRadius: 1, mr: 1, width: { xs: 150, sm: 250 } }}
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+          />
+          <IconButton onClick={handleSearch} sx={{ color: '#fff' }}>
+            <SearchIcon />
           </IconButton>
-          <Typography variant="h5" sx={{ flexGrow: 1, fontWeight: 'bold' }}>
-            <Link to="/" style={{ textDecoration: 'none', color: '#fff' }}>
-              MegaVideo
-            </Link>
-          </Typography>
-          <Button
-            color="inherit"
-            component={Link}
-            to="/upload"
-            startIcon={<CloudUploadIcon />}
-            sx={{ mr: 2 }}
-          >
-            Upload
-          </Button>
-          <Button color="inherit" component={Link} to="/login" sx={{ mr: 1 }}>
-            Login
-          </Button>
-          <Button variant="outlined" color="inherit" component={Link} to="/register">
-            Register
-          </Button>
-        </Toolbar>
-      </AppBar>
-      <Drawer anchor="left" open={drawerOpen} onClose={toggleDrawer}>
-        <Box sx={{ width: 250, mt: 2 }}>
-          <List>
-            <ListItem button component={Link} to="/" onClick={toggleDrawer}>
-              <ListItemText primary="Home" />
-            </ListItem>
-            <ListItem button component={Link} to="/upload" onClick={toggleDrawer}>
-              <ListItemText primary="Upload" />
-            </ListItem>
-            <ListItem button component={Link} to="/login" onClick={toggleDrawer}>
-              <ListItemText primary="Login" />
-            </ListItem>
-            <ListItem button component={Link} to="/register" onClick={toggleDrawer}>
-              <ListItemText primary="Register" />
-            </ListItem>
-          </List>
         </Box>
-      </Drawer>
-    </>
+
+        {/* Upload Button */}
+        <Button
+          component={Link}
+          to="/upload"
+          variant="outlined"
+          color="inherit"
+          sx={{ mr: 2 }}
+        >
+          Upload
+        </Button>
+
+        {/* Avatar */}
+        <IconButton onClick={handleAvatarClick} sx={{ p: 0 }}>
+          <Avatar sx={{ bgcolor: '#fff', color: 'primary.main' }} />
+        </IconButton>
+        <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={handleMenuClose}>
+          <MenuItem onClick={handleProfile}>Profile</MenuItem>
+          <MenuItem onClick={handleLogout}>Logout</MenuItem>
+        </Menu>
+      </Toolbar>
+    </AppBar>
   );
 }
 

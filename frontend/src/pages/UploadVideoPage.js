@@ -7,10 +7,10 @@ import {
   TextField,
   Button,
   LinearProgress,
-  Box,
+  Box
 } from '@mui/material';
-import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import { styled } from '@mui/material/styles';
+import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import api from '../services/api';
 
 const HiddenInput = styled('input')({
@@ -30,7 +30,7 @@ function UploadVideoPage() {
 
   const handleUpload = async () => {
     if (!videoFile) {
-      alert('Please select a video file!');
+      alert('No video selected');
       return;
     }
     setUploading(true);
@@ -52,27 +52,30 @@ function UploadVideoPage() {
         },
       });
 
-      alert('Video uploaded successfully!');
+      alert('Upload successful!');
       setTitle('');
       setHashtags('');
       setVideoFile(null);
       setUploadProgress(0);
     } catch (err) {
-      console.error(err);
-      alert('Video upload failed!');
+      if (err.response && err.response.status === 403) {
+        alert('Only creators can upload videos');
+      } else {
+        alert('Upload failed');
+      }
     } finally {
       setUploading(false);
     }
   };
 
   return (
-    <Container maxWidth="md" sx={{ mt: 6 }} className="fade-in">
+    <Container maxWidth="md" sx={{ mt: 4 }} className="fade-in">
       <Card
         sx={{
           p: 3,
           borderRadius: '20px',
           background:
-            'linear-gradient(45deg, rgba(255,255,255,0.8), rgba(255,255,255,0.9))',
+            'linear-gradient(45deg, rgba(255,255,255,0.85), rgba(255,255,255,0.95))',
           boxShadow: '0 8px 30px rgba(0,0,0,0.2)',
         }}
       >
@@ -105,11 +108,15 @@ function UploadVideoPage() {
                 border: '2px dashed #ccc',
                 borderRadius: '12px',
                 textAlign: 'center',
+                transition: 'all 0.2s ease-in-out',
+                '&:hover': {
+                  backgroundColor: '#fce4ec',
+                },
               }}
             >
               <CloudUploadIcon sx={{ fontSize: 60, color: '#aaa' }} />
               <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
-                Drag and drop a file here or click the button below to select a video.
+                Drag and drop a video file here or click the button below.
               </Typography>
               <label htmlFor="video-upload">
                 <HiddenInput
@@ -147,6 +154,7 @@ function UploadVideoPage() {
               sx={{ mt: 4 }}
               onClick={handleUpload}
               disabled={uploading}
+              startIcon={<CloudUploadIcon />}
             >
               {uploading ? 'Uploading...' : 'Upload Video'}
             </Button>
