@@ -13,6 +13,7 @@ router.post('/register', async (req, res) => {
     if (!['consumer', 'creator'].includes(role)) {
       return res.status(400).json({ message: 'Invalid role' });
     }
+
     let user = await User.findOne({ email });
     if (user) return res.status(400).json({ message: 'Email already in use' });
 
@@ -20,6 +21,7 @@ router.post('/register', async (req, res) => {
     await user.save();
     return res.status(201).json({ message: 'User registered' });
   } catch (err) {
+    console.error('Register error:', err);
     return res.status(500).json({ message: err.message });
   }
 });
@@ -47,6 +49,7 @@ router.post('/login', async (req, res) => {
       },
     });
   } catch (err) {
+    console.error('Login error:', err);
     return res.status(500).json({ message: err.message });
   }
 });

@@ -11,6 +11,7 @@ function ProfilePage() {
     api.get('/users/profile')
       .then(res => setUser(res.data))
       .catch(err => {
+        console.error(err);
         showError('Failed to load profile');
       });
   }, [showError]);
@@ -18,7 +19,7 @@ function ProfilePage() {
   if (!user) return <p>Loading profile...</p>;
 
   return (
-    <Container maxWidth="sm" sx={{ mt: 4 }} className="fade-in">
+    <Container maxWidth="sm" sx={{ mt: 4 }}>
       <Paper
         sx={{
           p: 4,

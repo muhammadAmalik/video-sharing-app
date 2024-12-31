@@ -1,7 +1,8 @@
 import axios from 'axios';
 
+// Use your Azure back-end domain here
 const instance = axios.create({
-  baseURL: 'https://video-sharing-backend-ewgnfnepbcamg3bq.uksouth-01.azurewebsites.net/api',
+  baseURL: 'https://video-sharing-backend-ewgnfnepbcamg3bq.uksouth-01.azurewebsites.net/api', 
 });
 
 // Attach token

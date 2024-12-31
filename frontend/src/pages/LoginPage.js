@@ -9,7 +9,7 @@ function LoginPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
-  const { showSuccess, showError } = useSnackbar(); // from context
+  const { showSuccess, showError } = useSnackbar();
 
   const handleLogin = async () => {
     try {
@@ -17,8 +17,10 @@ function LoginPage() {
       localStorage.setItem('token', res.data.token);
 
       showSuccess('Login successful!');
+      // *** Force navigate to home page ***
       navigate('/');
     } catch (err) {
+      console.error(err);
       showError('Login failed');
     }
   };

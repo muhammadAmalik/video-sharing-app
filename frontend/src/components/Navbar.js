@@ -1,7 +1,15 @@
 import React, { useState } from 'react';
 import {
-  AppBar, Toolbar, Typography, TextField, IconButton,
-  Avatar, Menu, MenuItem, Box, Button
+  AppBar,
+  Toolbar,
+  Typography,
+  TextField,
+  IconButton,
+  Avatar,
+  Menu,
+  MenuItem,
+  Box,
+  Button
 } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import { Link, useNavigate } from 'react-router-dom';
@@ -29,6 +37,7 @@ function Navbar() {
   };
 
   const handleSearch = () => {
+    // do something
     alert(`Searching for: ${searchQuery}`);
   };
 
@@ -55,7 +64,6 @@ function Navbar() {
           </IconButton>
         </Box>
 
-        {/* Upload button */}
         <Button
           component={Link}
           to="/upload"
@@ -66,7 +74,6 @@ function Navbar() {
           Upload
         </Button>
 
-        {/* Avatar */}
         <IconButton onClick={handleAvatarClick} sx={{ p: 0 }}>
           <Avatar sx={{ bgcolor: '#fff', color: 'primary.main' }} />
         </IconButton>

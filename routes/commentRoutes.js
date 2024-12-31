@@ -4,7 +4,6 @@ const authMiddleware = require('../middleware/authMiddleware');
 const Comment = require('../models/Comment');
 const Video = require('../models/Video');
 
-// POST /api/comments/:videoId
 router.post('/:videoId', authMiddleware, async (req, res) => {
   try {
     const { videoId } = req.params;
@@ -23,7 +22,7 @@ router.post('/:videoId', authMiddleware, async (req, res) => {
 
     return res.status(201).json(comment);
   } catch (err) {
-    console.error(err);
+    console.error('Comment error:', err);
     res.status(500).json({ message: err.message });
   }
 });

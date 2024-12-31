@@ -54,10 +54,11 @@ function UploadVideoPage() {
       setVideoFile(null);
       setUploadProgress(0);
     } catch (err) {
+      console.error(err);
       if (err.response && err.response.status === 403) {
         showError('Only creators can upload videos');
       } else {
-        showError('Upload failed');
+        showError('Upload failed: ' + (err.response?.data?.message || err.message));
       }
     } finally {
       setUploading(false);

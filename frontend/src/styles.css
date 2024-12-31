@@ -1,11 +1,9 @@
-/* Body background (optional background image or pattern) */
 body {
   margin: 0;
   background: url("https://images.unsplash.com/photo-1534850336045-c6c6d287f89e") no-repeat center center fixed;
   background-size: cover;
 }
 
-/* Fade-in animation for pages */
 .fade-in {
   animation: fadeIn 0.5s ease-in;
 }

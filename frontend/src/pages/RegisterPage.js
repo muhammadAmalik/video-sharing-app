@@ -22,6 +22,7 @@ function RegisterPage() {
       showSuccess('Registration successful. Please log in.');
       navigate('/login');
     } catch (err) {
+      console.error(err);
       showError('Registration failed');
     }
   };

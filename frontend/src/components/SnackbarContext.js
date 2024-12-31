@@ -32,7 +32,12 @@ export function SnackbarProvider({ children }) {
   return (
     <SnackbarContext.Provider value={value}>
       {children}
-      <Snackbar open={snackOpen} autoHideDuration={3000} onClose={handleClose}>
+      <Snackbar
+        open={snackOpen}
+        autoHideDuration={3000}
+        onClose={handleClose}
+        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+      >
         <Alert severity={snackSeverity} onClose={handleClose} variant="filled">
           {snackMessage}
         </Alert>
