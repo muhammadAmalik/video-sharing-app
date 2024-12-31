@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Container, Paper, Box, TextField, Typography, Button } from '@mui/material';
-import { Link, useNavigate } from 'react-router-dom';
 import LockIcon from '@mui/icons-material/Lock';
+import { Link, useNavigate } from 'react-router-dom';
 import api from '../services/api';
 
 function LoginPage() {

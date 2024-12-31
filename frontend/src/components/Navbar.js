@@ -35,14 +35,12 @@ function Navbar() {
   return (
     <AppBar position="static" sx={{ px: 2 }}>
       <Toolbar>
-        {/* Logo / Title */}
         <Typography variant="h5" sx={{ fontWeight: 'bold', flexGrow: 0, mr: 2 }}>
           <Link to="/" style={{ color: '#fff', textDecoration: 'none' }}>
             MegaVideo
           </Link>
         </Typography>
 
-        {/* Search Bar */}
         <Box sx={{ display: 'flex', alignItems: 'center', flexGrow: 1 }}>
           <TextField
             variant="outlined"
@@ -57,7 +55,7 @@ function Navbar() {
           </IconButton>
         </Box>
 
-        {/* Upload Button */}
+        {/* Upload button */}
         <Button
           component={Link}
           to="/upload"

@@ -18,9 +18,7 @@ function App() {
       <Routes>
         <Route
           path="/"
-          element={
-            isAuthenticated ? <HomePage /> : <Navigate to="/login" />
-          }
+          element={isAuthenticated ? <HomePage /> : <Navigate to="/login" />}
         />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
@@ -49,6 +47,7 @@ function App() {
             </ProtectedRoute>
           }
         />
+        {/* catch all */}
         <Route path="*" element={<Navigate to="/" />} />
       </Routes>
     </>

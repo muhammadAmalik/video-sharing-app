@@ -3,13 +3,13 @@ import { createTheme } from '@mui/material/styles';
 const theme = createTheme({
   palette: {
     primary: {
-      main: '#8e24aa', // Pinkish purple
+      main: '#8e24aa',
     },
     secondary: {
-      main: '#ff4081', // Pink
+      main: '#ff4081',
     },
     background: {
-      default: '#f3e5f5', // very light purple
+      default: '#f3e5f5',
     },
   },
   typography: {

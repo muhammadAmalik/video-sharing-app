@@ -1,18 +1,30 @@
 import React, { useState } from 'react';
-import { Container, Paper, Box, TextField, Typography, Button } from '@mui/material';
-import { Link, useNavigate } from 'react-router-dom';
+import {
+  Container,
+  Paper,
+  Box,
+  TextField,
+  Typography,
+  Button,
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem
+} from '@mui/material';
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
+import { Link, useNavigate } from 'react-router-dom';
 import api from '../services/api';
 
 function RegisterPage() {
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [role, setRole] = useState('consumer');
   const navigate = useNavigate();
 
   const handleRegister = async () => {
     try {
-      await api.post('/auth/register', { username, email, password });
+      await api.post('/auth/register', { username, email, password, role });
       alert('Registration successful. Please log in.');
       navigate('/login');
     } catch (err) {
@@ -59,6 +71,20 @@ function RegisterPage() {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
+
+          {/* Role Dropdown */}
+          <FormControl fullWidth sx={{ mt: 2 }}>
+            <InputLabel>Role</InputLabel>
+            <Select
+              value={role}
+              label="Role"
+              onChange={(e) => setRole(e.target.value)}
+            >
+              <MenuItem value="consumer">Consumer</MenuItem>
+              <MenuItem value="creator">Creator</MenuItem>
+            </Select>
+          </FormControl>
+
           <Button
             variant="contained"
             color="secondary"
