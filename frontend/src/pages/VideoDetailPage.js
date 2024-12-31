@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Container, Typography, Box, TextField, Button } from '@mui/material';
+import { Container, Typography, Box, TextField, Button, Paper } from '@mui/material';
 import { useParams } from 'react-router-dom';
 import api from '../services/api';
 import { useSnackbar } from '../components/SnackbarContext';
@@ -9,37 +9,59 @@ function VideoDetailPage() {
   const [video, setVideo] = useState(null);
   const [commentText, setCommentText] = useState('');
   const { showError, showSuccess } = useSnackbar();
+  const [loadingVideo, setLoadingVideo] = useState(true);
+  const [loadingComments, setLoadingComments] = useState(true);
 
   useEffect(() => {
-    api.get(`/videos/${id}`)
-      .then(res => setVideo(res.data))
-      .catch(err => {
-        console.error(err);
-        showError('Failed to load video');
-      });
+    const fetchVideoAndComments = async () => {
+      try {
+        const videoResponse = await api.get(`/videos/${id}`);
+        setVideo(videoResponse.data);
+        setLoadingVideo(false);
+
+        const commentsResponse = await api.get(`/comments/${id}`);
+        setVideo(prevVideo => ({
+          ...prevVideo,
+          comments: commentsResponse.data,
+        }));
+        setLoadingComments(false);
+      } catch (error) {
+        console.error(error);
+        showError('Failed to load video or comments');
+        setLoadingVideo(false);
+        setLoadingComments(false);
+      }
+    };
+
+    fetchVideoAndComments();
   }, [id, showError]);
 
-  const handleComment = () => {
+  const handleComment = async () => {
     if (!commentText.trim()) return;
-    api.post(`/comments/${id}`, { text: commentText })
-      .then(res => {
-        if (!video.comments) video.comments = [];
-        video.comments.push(res.data);
-        setVideo({ ...video });
-        setCommentText('');
-        showSuccess('Comment added!');
-      })
-      .catch(err => {
-        console.error(err);
-        showError('Failed to post comment');
-      });
+
+    try {
+      const response = await api.post(`/comments/${id}`, { text: commentText });
+
+      setVideo(prevVideo => ({
+        ...prevVideo,
+        comments: prevVideo.comments ? [...prevVideo.comments, response.data] : [response.data],
+      }));
+
+      setCommentText('');
+      showSuccess('Comment added!');
+    } catch (error) {
+      console.error(error);
+      showError('Failed to post comment');
+    }
   };
 
-  if (!video) return <p>Loading...</p>;
+  if (loadingVideo) return <p>Loading video...</p>;
 
   return (
     <Container sx={{ mt: 4 }} className="fade-in">
-      <Typography variant="h4" gutterBottom>{video.title}</Typography>
+      <Typography variant="h4" gutterBottom>
+        {video.title}
+      </Typography>
       <Box sx={{ mb: 2 }}>
         <video width="100%" controls src={video.videoUrl} />
       </Box>
@@ -47,23 +69,57 @@ function VideoDetailPage() {
         Hashtags: {video.hashtags && video.hashtags.join(', ')}
       </Typography>
 
-      <Typography variant="h5">Comments</Typography>
-      {video.comments && video.comments.map((c, idx) => (
-        <Box key={idx} sx={{ my: 1, p: 1, border: '1px solid #ccc' }}>
-          <Typography variant="body2">{c.text}</Typography>
+      {/* Comments Section Wrapped in a Pale White Box */}
+      <Paper elevation={3} sx={{ p: 3, backgroundColor: '#fdfdfd' }}>
+        <Typography variant="h5" gutterBottom>
+          Comments
+        </Typography>
+        {loadingComments ? (
+          <Typography variant="body2">Loading comments...</Typography>
+        ) : video.comments && video.comments.length > 0 ? (
+          video.comments.map(c => (
+            <Box
+              key={c.id} // Ensure each comment has a unique 'id'
+              sx={{
+                my: 1,
+                p: 2,
+                borderRadius: 1,
+                backgroundColor: '#ffffff',
+                boxShadow: '0 1px 3px rgba(0,0,0,0.1)',
+              }}
+            >
+              <Typography variant="body2">{c.text}</Typography>
+              {/* Optional: Display author and timestamp */}
+              {/* <Typography variant="caption" color="textSecondary">
+                {c.author} • {new Date(c.createdAt).toLocaleString()}
+              </Typography> */}
+            </Box>
+          ))
+        ) : (
+          <Typography variant="body2" color="textSecondary">
+            No comments yet. Be the first to comment!
+          </Typography>
+        )}
+        <Box sx={{ mt: 3 }}>
+          <TextField
+            label="Add a comment"
+            fullWidth
+            multiline
+            minRows={2}
+            value={commentText}
+            onChange={(e) => setCommentText(e.target.value)}
+            variant="outlined"
+          />
+          <Button
+            variant="contained"
+            sx={{ mt: 2 }}
+            onClick={handleComment}
+            disabled={!commentText.trim()}
+          >
+            Submit
+          </Button>
         </Box>
-      ))}
-      <Box sx={{ mt: 2 }}>
-        <TextField
-          label="Add a comment"
-          fullWidth
-          value={commentText}
-          onChange={(e) => setCommentText(e.target.value)}
-        />
-        <Button variant="contained" sx={{ mt: 1 }} onClick={handleComment}>
-          Submit
-        </Button>
-      </Box>
+      </Paper>
     </Container>
   );
 }

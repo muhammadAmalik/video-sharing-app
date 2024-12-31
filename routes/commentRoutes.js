@@ -26,5 +26,25 @@ router.post('/:videoId', authMiddleware, async (req, res) => {
     res.status(500).json({ message: err.message });
   }
 });
+// GET /api/comments/:videoId
+router.get('/:videoId', async (req, res) => {
+  try {
+    const { videoId } = req.params;
+
+    // Validate videoId as a valid ObjectId
+    if (!mongoose.Types.ObjectId.isValid(videoId)) {
+      return res.status(400).json({ message: 'Invalid video ID format' });
+    }
+
+    const comments = await Comment.find({ video: videoId })
+      .populate('user', 'username'); 
+
+    res.json(comments);
+  } catch (err) {
+    console.error('Get comments error:', err);
+    res.status(500).json({ message: err.message });
+  }
+});
+
 
 module.exports = router;

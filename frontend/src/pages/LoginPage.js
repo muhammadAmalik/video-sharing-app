@@ -1,14 +1,14 @@
 import React, { useState } from 'react';
 import { Container, Paper, Box, TextField, Typography, Button } from '@mui/material';
 import LockIcon from '@mui/icons-material/Lock';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link} from 'react-router-dom';
 import api from '../services/api';
 import { useSnackbar } from '../components/SnackbarContext';
 
 function LoginPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const navigate = useNavigate();
+  
   const { showSuccess, showError } = useSnackbar();
 
   const handleLogin = async () => {
@@ -18,7 +18,7 @@ function LoginPage() {
 
       showSuccess('Login successful!');
       // *** Force navigate to home page ***
-      navigate('/');
+      window.location.href = 'https://agreeable-river-021ea7c03.4.azurestaticapps.net/';
     } catch (err) {
       console.error(err);
       showError('Login failed');
