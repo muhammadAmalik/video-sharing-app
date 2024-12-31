@@ -1,4 +1,3 @@
-// src/pages/HomePage.js
 import React, { useEffect, useState } from 'react';
 import { Container, Typography, Grid, Box } from '@mui/material';
 import VideoCard from '../components/VideoCard';
@@ -10,22 +9,23 @@ function HomePage() {
   const [hashtags, setHashtags] = useState([]);
 
   useEffect(() => {
-    // For demonstration, local mock data:
-    setVideos([
-      { _id: '1', title: 'Awesome Travel', thumbnailUrl: '', hashtags: ['#travel', '#adventure'] },
-      { _id: '2', title: 'Cooking Tips', thumbnailUrl: '', hashtags: ['#food', '#cooking'] },
-      { _id: '3', title: 'Tech Review', thumbnailUrl: '', hashtags: ['#tech', '#gadgets'] },
-    ]);
+    // Real call to fetch latest videos
+    api.get('/videos/latest')
+      .then((res) => setVideos(res.data))
+      .catch((err) => console.error(err));
 
-    setHashtags(['#travel', '#food', '#tech', '#funny', '#music', '#sports']);
+    // If you have an endpoint for trending hashtags, call it
+    // or just set dummy data
+    setHashtags(['#travel', '#tech', '#food', '#music', '#funny']);
   }, []);
 
   return (
-    <Container sx={{ mt: 4 }}>
+    <Container sx={{ mt: 4 }} className="fade-in">
       <Typography variant="h4" gutterBottom>
         Latest Videos
       </Typography>
       <Box sx={{ display: 'flex', gap: 4 }}>
+        {/* VIDEO GRID */}
         <Box sx={{ flex: 3 }}>
           <Grid container spacing={3}>
             {videos.map((video) => (
@@ -36,7 +36,8 @@ function HomePage() {
           </Grid>
         </Box>
 
-        <Box sx={{ flex: 1 }}>
+        {/* HASHTAG LIST */}
+        <Box sx={{ flex: 1, display: { xs: 'none', md: 'block' } }}>
           <HashtagList hashtags={hashtags} />
         </Box>
       </Box>

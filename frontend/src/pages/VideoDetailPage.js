@@ -1,4 +1,3 @@
-// src/pages/VideoDetailPage.js
 import React, { useEffect, useState } from 'react';
 import { Container, Typography, Box } from '@mui/material';
 import { useParams } from 'react-router-dom';
@@ -8,35 +7,33 @@ import api from '../services/api';
 function VideoDetailPage() {
   const { id } = useParams();
   const [video, setVideo] = useState(null);
+  const [commentText, setCommentText] = useState('');
 
   useEffect(() => {
-    // In real scenario: api.get(`/videos/${id}`)
-    setVideo({
-      _id: id,
-      title: 'Sample Video Title',
-      videoUrl: 'https://samplelib.com/lib/preview/mp4/sample-5s.mp4',
-      hashtags: ['#sample', '#video'],
-      comments: [
-        { user: 'Alice', text: 'Great video!' },
-        { user: 'Bob', text: 'Awesome content!' },
-      ],
-    });
+    // Fetch single video details
+    api.get(`/videos/${id}`)
+      .then((res) => setVideo(res.data))
+      .catch((err) => console.error(err));
   }, [id]);
 
+  // Add comment
   const handleAddComment = (text) => {
-    // Example: api.post(`/comments/${id}`, { text })
-    // Then update state
-    if (!text) return;
-    setVideo((prev) => ({
-      ...prev,
-      comments: [...prev.comments, { user: 'You', text }],
-    }));
+    if (!text.trim()) return;
+    api.post(`/comments/${id}`, { text })
+      .then((res) => {
+        // The new comment is in res.data
+        setVideo((prev) => ({
+          ...prev,
+          comments: [...(prev.comments || []), res.data],
+        }));
+      })
+      .catch((err) => console.error(err));
   };
 
   if (!video) return <p>Loading...</p>;
 
   return (
-    <Container sx={{ mt: 4 }}>
+    <Container sx={{ mt: 4 }} className="fade-in">
       <Typography variant="h4" gutterBottom>
         {video.title}
       </Typography>
@@ -44,9 +41,13 @@ function VideoDetailPage() {
         <video controls width="100%" src={video.videoUrl} />
       </Box>
       <Typography variant="body1" gutterBottom>
-        Hashtags: {video.hashtags.join(' ')}
+        Hashtags: {video.hashtags && video.hashtags.join(' ')}
       </Typography>
-      <CommentSection comments={video.comments} onAddComment={handleAddComment} />
+
+      <CommentSection
+        comments={video.comments || []}
+        onAddComment={handleAddComment}
+      />
     </Container>
   );
 }

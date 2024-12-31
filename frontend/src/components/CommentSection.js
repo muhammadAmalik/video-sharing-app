@@ -1,4 +1,3 @@
-// src/components/CommentSection.js
 import React, { useState } from 'react';
 import { Typography, Box, TextField, Button, Paper } from '@mui/material';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
@@ -7,6 +6,7 @@ function CommentSection({ comments, onAddComment }) {
   const [text, setText] = useState('');
 
   const handleSubmit = () => {
+    if (!text.trim()) return;
     onAddComment(text);
     setText('');
   };
@@ -22,7 +22,7 @@ function CommentSection({ comments, onAddComment }) {
           <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
             <AccountCircleIcon sx={{ mr: 1 }} />
             <Typography variant="subtitle1" fontWeight="bold">
-              {c.user}
+              {c.user || 'User'}
             </Typography>
           </Box>
           <Typography variant="body2">{c.text}</Typography>

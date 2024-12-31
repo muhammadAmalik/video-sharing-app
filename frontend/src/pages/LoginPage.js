@@ -1,13 +1,5 @@
-// src/pages/LoginPage.js
 import React, { useState } from 'react';
-import {
-  Container,
-  Paper,
-  Box,
-  TextField,
-  Typography,
-  Button,
-} from '@mui/material';
+import { Container, Paper, Box, TextField, Typography, Button } from '@mui/material';
 import LockIcon from '@mui/icons-material/Lock';
 import { Link } from 'react-router-dom';
 import api from '../services/api';
@@ -17,8 +9,15 @@ function LoginPage() {
   const [password, setPassword] = useState('');
 
   const handleLogin = () => {
-    // e.g. api.post('/auth/login', { email, password })
-    alert(`Logging in with ${email}`);
+    api.post('/auth/login', { email, password })
+      .then((res) => {
+        localStorage.setItem('token', res.data.token);
+        window.location.href = '/';
+      })
+      .catch((err) => {
+        console.error(err);
+        alert('Login failed');
+      });
   };
 
   return (

@@ -1,34 +1,41 @@
-// src/pages/RegisterPage.js
 import React, { useState } from 'react';
 import { Container, Paper, Box, TextField, Typography, Button } from '@mui/material';
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import { Link } from 'react-router-dom';
+import api from '../services/api';
 
 function RegisterPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
   const handleRegister = () => {
-    // Example: api.post('/auth/register', { email, password })
-    alert(`Registering with ${email} / ${password}`);
+    api.post('/auth/register', { email, password })
+      .then(() => {
+        alert('Registration successful');
+        window.location.href = '/login';
+      })
+      .catch((err) => {
+        console.error(err);
+        alert('Registration failed');
+      });
   };
 
   return (
-    <Container maxWidth="sm" sx={{ mt: 8 }}>
+    <Container maxWidth="sm" sx={{ mt: 8 }} className="fade-in">
       <Paper
         sx={{
           p: 4,
           textAlign: 'center',
           borderRadius: '20px',
-          boxShadow: '0 8px 30px rgba(0,0,0,0.1)',
+          backgroundColor: 'rgba(255,255,255,0.8)',
+          boxShadow: '0 8px 30px rgba(0,0,0,0.2)',
         }}
-        elevation={3}
       >
         <PersonAddIcon sx={{ fontSize: 60, mb: 2, color: 'secondary.main' }} />
         <Typography variant="h4" gutterBottom>
           Register
         </Typography>
-        <Box component="form" sx={{ mt: 2 }}>
+        <Box sx={{ mt: 2 }}>
           <TextField
             label="Email"
             variant="outlined"

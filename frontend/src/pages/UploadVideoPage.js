@@ -1,4 +1,3 @@
-// src/pages/UploadVideoPage.js
 import React, { useState } from 'react';
 import {
   Container,
@@ -9,7 +8,6 @@ import {
   Button,
   LinearProgress,
   Box,
-  IconButton,
 } from '@mui/material';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import { styled } from '@mui/material/styles';
@@ -44,19 +42,13 @@ function UploadVideoPage() {
       formData.append('hashtags', hashtags);
       formData.append('video', videoFile);
 
-      // Example: if your backend expects Bearer token, set it here
-      // const token = localStorage.getItem('token');
-
       await api.post('/videos/upload', formData, {
+        headers: { 'Content-Type': 'multipart/form-data' },
         onUploadProgress: (progressEvent) => {
           const progress = Math.round(
             (progressEvent.loaded * 100) / progressEvent.total
           );
           setUploadProgress(progress);
-        },
-        headers: {
-          'Content-Type': 'multipart/form-data',
-          // Authorization: `Bearer ${token}`,
         },
       });
 
