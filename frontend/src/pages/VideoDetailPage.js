@@ -9,53 +9,38 @@ function VideoDetailPage() {
   const [video, setVideo] = useState(null);
   const [commentText, setCommentText] = useState('');
   const { showError, showSuccess } = useSnackbar();
-  const [loadingVideo, setLoadingVideo] = useState(true);
-  const [loadingComments, setLoadingComments] = useState(true);
 
   useEffect(() => {
-    const fetchVideoAndComments = async () => {
+    const fetchVideo = async () => {
       try {
-        const videoResponse = await api.get(`/videos/${id}`);
-        setVideo(videoResponse.data);
-        setLoadingVideo(false);
-
-        const commentsResponse = await api.get(`/comments/${id}`);
-        setVideo(prevVideo => ({
-          ...prevVideo,
-          comments: commentsResponse.data,
-        }));
-        setLoadingComments(false);
-      } catch (error) {
-        console.error(error);
-        showError('Failed to load video or comments');
-        setLoadingVideo(false);
-        setLoadingComments(false);
+        const videoRes = await api.get(`/videos/${id}`);
+        setVideo(videoRes.data);
+      } catch (err) {
+        console.error(err);
+        showError('Failed to load video');
       }
     };
 
-    fetchVideoAndComments();
+    fetchVideo();
   }, [id, showError]);
 
   const handleComment = async () => {
     if (!commentText.trim()) return;
-
     try {
-      const response = await api.post(`/comments/${id}`, { text: commentText });
-
-      setVideo(prevVideo => ({
-        ...prevVideo,
-        comments: prevVideo.comments ? [...prevVideo.comments, response.data] : [response.data],
+      const res = await api.post(`/comments/${id}`, { text: commentText });
+      setVideo(prev => ({
+        ...prev,
+        comments: prev.comments ? [...prev.comments, res.data] : [res.data],
       }));
-
       setCommentText('');
       showSuccess('Comment added!');
-    } catch (error) {
-      console.error(error);
+    } catch (err) {
+      console.error(err);
       showError('Failed to post comment');
     }
   };
 
-  if (loadingVideo) return <p>Loading video...</p>;
+  if (!video) return <p>Loading...</p>;
 
   return (
     <Container sx={{ mt: 4 }} className="fade-in">
@@ -70,16 +55,14 @@ function VideoDetailPage() {
       </Typography>
 
       {/* Comments Section Wrapped in a Pale White Box */}
-      <Paper elevation={3} sx={{ p: 3, backgroundColor: '#fdfdfd' }}>
+      <Paper elevation={3} sx={{ p: 3, backgroundColor: '#f9f9f9' }}>
         <Typography variant="h5" gutterBottom>
           Comments
         </Typography>
-        {loadingComments ? (
-          <Typography variant="body2">Loading comments...</Typography>
-        ) : video.comments && video.comments.length > 0 ? (
-          video.comments.map(c => (
+        {video.comments && video.comments.length > 0 ? (
+          video.comments.map((c, idx) => (
             <Box
-              key={c.id} // Ensure each comment has a unique 'id'
+              key={idx}
               sx={{
                 my: 1,
                 p: 2,
@@ -89,10 +72,6 @@ function VideoDetailPage() {
               }}
             >
               <Typography variant="body2">{c.text}</Typography>
-              {/* Optional: Display author and timestamp */}
-              {/* <Typography variant="caption" color="textSecondary">
-                {c.author} • {new Date(c.createdAt).toLocaleString()}
-              </Typography> */}
             </Box>
           ))
         ) : (
