@@ -19,10 +19,6 @@ app.use(express.json());
 // Connect to DB (Cosmos or local Mongo)
 connectDB();
 
-app.get('/', (req, res) => {
-  res.send('Backend is running!');
-});
-
 // Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/users', userRoutes);

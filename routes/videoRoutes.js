@@ -47,3 +47,4 @@ router.post('/upload', authMiddleware, uploadStrategy.single('video'), async (re
     return res.status(500).json({ message: err.message });
   }
 });
+module.exports = router;

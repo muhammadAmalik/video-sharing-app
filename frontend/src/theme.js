@@ -1,15 +1,16 @@
+// src/theme.js
 import { createTheme } from '@mui/material/styles';
 
 const theme = createTheme({
   palette: {
     primary: {
-      main: '#8e24aa',
+      main: '#6a1b9a', // Deep purple
     },
     secondary: {
-      main: '#ff4081',
+      main: '#ef5350', // Redish
     },
     background: {
-      default: '#f3e5f5',
+      default: '#f3e5f5', // Light purple background
     },
   },
   typography: {
@@ -19,7 +20,7 @@ const theme = createTheme({
     MuiAppBar: {
       styleOverrides: {
         root: {
-          background: 'linear-gradient(90deg, #8e24aa 0%, #d81b60 100%)',
+          background: 'linear-gradient(90deg, #6a1b9a 0%, #8e24aa 100%)',
         },
       },
     },
@@ -31,7 +32,7 @@ const theme = createTheme({
           transition: 'transform 0.3s ease, box-shadow 0.3s ease',
           '&:hover': {
             transform: 'translateY(-5px)',
-            boxShadow: '0 12px 40px rgba(0,0,0,0.2)',
+            boxShadow: '0 12px 40px rgba(0,0,0,0.3)',
           },
         },
       },
@@ -41,7 +42,7 @@ const theme = createTheme({
         root: {
           borderRadius: '999px',
           textTransform: 'none',
-          fontWeight: 600,
+          fontWeight: '600',
           padding: '8px 24px',
         },
       },
